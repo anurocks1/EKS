@@ -2,34 +2,43 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sei-react-app
+  name: loco-react-app
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
-      app: sei-react-app
+      app: loco-react-app
   template:
     metadata:
       labels:
-        app: sei-react-app
+        app: loco-react-app
     spec:
       imagePullSecrets:
-      - name: myregistrykey  
+      - name: myregistrykey
       containers:
-      - name: sei-react-app
+      - name: loco-react-app
         image: anupam19/react-frontend:latest
         ports:
-        - containerPort: 5173
+        - containerPort: 4173
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 1m
+            memory: 32Mi
+          limits:
+            cpu: 3m
+            memory: 64Mi
+
         
 ---        
 apiVersion: v1
 kind: Service
 metadata:
-  name: sei-react-app
+  name: loco-react-app
 spec:
   type: LoadBalancer
   ports:
   - port: 80
-    targetPort: 5173
+    targetPort: 4173
   selector:
-    app: sei-react-app
+    app: loco-react-app
